@@ -16,7 +16,7 @@ namespace TooManyOrbits.Commands
 		{
 			if (m_executedCommands.Count > 0)
 			{
-				Logger.Error("CommandSet is in an invalid state");
+				Log.Error("CommandSet is in an invalid state");
 			}
 
 			for (int i = 0; i < m_commands.Count; i++)

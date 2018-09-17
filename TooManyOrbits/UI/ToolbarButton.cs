@@ -1,61 +1,79 @@
 ﻿using System;
 using KSP.UI.Screens;
 using UnityEngine;
+using ToolbarControl_NS;
 
 namespace TooManyOrbits.UI
 {
-	internal class ToolbarButton : IDisposable
-	{
-		public event Callback OnEnable, OnDisable;
+    internal class ToolbarButton : IDisposable
+    {
+        
+        internal  static ToolbarControl toolbarControl;
+        
+        private GameObject gameObject;
+        internal static ResourceProvider rp;
 
-		private readonly Texture m_texture;
-		private ApplicationLauncherButton m_button;
+        public ToolbarButton(GameObject go, ResourceProvider resources)
+        {
+            gameObject = go;
+            rp = resources;
+            toolbarControl = null;
+        }
 
-		public ToolbarButton(ResourceProvider resources)
-		{
-			m_texture = resources.ToolbarIcon;
-		}
+        public void Dispose()
+        {
+            Hide();
+        }
 
-		public void Dispose()
-		{
-			Hide();
-		}
+        public void Show()
+        {
+            if (toolbarControl == null)
+            {
+                BuildButton();
 
-		public void Show()
-		{
-			if (m_button == null)
-			{
-				m_button = BuildButton();
+            }
+        }
 
-			}
-		}
+        public void Hide()
+        {
+            if (toolbarControl != null)
+            {
+                DestroyButton();
+                toolbarControl = null;
+            }
+        }
 
-		public void Hide()
-		{
-			if (m_button != null)
-			{
-				DestroyButton(m_button);
-				m_button = null;
-			}
-		}
+        internal const string MODID = "toomanyorbits_NS";
+        internal const string MODNAME = "Too Many Orbits";
 
-		private ApplicationLauncherButton BuildButton()
-		{
-			return ApplicationLauncher.Instance.AddModApplication(
-				onTrue: () => OnEnable?.Invoke(),
-				onFalse: () => OnDisable?.Invoke(),
-				onHover: null,
-				onHoverOut: null,
-				onEnable: null,
-				onDisable: null,
-				visibleInScenes: ApplicationLauncher.AppScenes.ALWAYS, /* MAPVIEW does not work in 1.2.2 */
-				texture: m_texture
-				);
-		}
+        private void BuildButton()
+        {
 
-		private void DestroyButton(ApplicationLauncherButton button)
-		{
-			ApplicationLauncher.Instance.RemoveModApplication(button);
-		}
-	}
+            toolbarControl = gameObject.AddComponent<ToolbarControl>();
+            toolbarControl.AddToAllToolbars(OnEnable2, OnDisabl2e,
+                ApplicationLauncher.AppScenes.ALWAYS,
+                MODID,
+                "geocacheButton",
+                //rp.BuildPath("ToolbarIcon-Green-38", false),
+                rp.BuildPath("ToolbarIcon-38", false),
+                //rp.BuildPath("ToolbarIcon-Green-24", false),
+                rp.BuildPath("ToolbarIcon-24", false)
+
+            );
+        }
+        void OnEnable2()
+        {
+            TooManyOrbitsModule.Instance.m_window.Show();
+        }
+        void OnDisabl2e()
+        {
+            TooManyOrbitsModule.Instance.m_window.Hide();
+        }
+        private void DestroyButton()
+        {
+            toolbarControl﻿.OnDestroy();
+            UnityEngine.Object.Destroy(toolbarControl);
+
+        }
+    }
 }

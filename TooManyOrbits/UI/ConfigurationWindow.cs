@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using ClickThroughFix;
 
 namespace TooManyOrbits.UI
 {
@@ -32,7 +33,8 @@ namespace TooManyOrbits.UI
 
 		private int Width => m_minimized ? WidthMinimized : WidthMaximized;
 		private int Height => m_minimized ? HeightMinimized : HeightMaximized;
-		private Texture ToolbarIcon => m_visibilityController.IsVisible ? m_toolbarTexture : m_greenToolbarTexture;
+		private Texture ToolbarIcon => m_visibilityController.IsVisible? m_toolbarTexture : m_greenToolbarTexture;
+        
 
 		public ConfigurationWindow(string title, Configuration configuration, IVisibilityController visibilityController, ResourceProvider resources)
 		{
@@ -87,11 +89,11 @@ namespace TooManyOrbits.UI
 		{
 			if (m_minimized)
 			{
-				m_position = GUILayout.Window(m_windowId, m_position, DrawMinimizedWindow, string.Empty);
+				m_position = ClickThruBlocker.GUILayoutWindow(m_windowId, m_position, DrawMinimizedWindow, string.Empty);
 			}
 			else
 			{
-				m_position = GUILayout.Window(m_windowId, m_position, DrawMaximizedWindow, m_title);
+				m_position = ClickThruBlocker.GUILayoutWindow(m_windowId, m_position, DrawMaximizedWindow, m_title);
 			}
 		}
 

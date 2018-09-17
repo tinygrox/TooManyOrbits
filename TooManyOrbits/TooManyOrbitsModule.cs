@@ -10,7 +10,9 @@ namespace TooManyOrbits
 	[KSPAddon(KSPAddon.Startup.Flight, false)]
     public class TooManyOrbitsModule : MonoBehaviour
 	{
-		public const string ModName = "TooManyOrbits";
+        static internal TooManyOrbitsModule Instance;
+
+        public const string ModName = "TooManyOrbits";
 		public const string ResourcePath = ModName + "/";
 
 		private string Version => Assembly.GetExecutingAssembly().GetName().Version.ToString();
@@ -18,7 +20,7 @@ namespace TooManyOrbits
 
 		private KeyCode m_toggleButton;
 		private ToolbarButton m_toolbarButton;
-		private ConfigurationWindow m_window;
+		internal ConfigurationWindow m_window;
 		private Configuration m_configuration;
 		private IVisibilityController m_visibilityController;
 		private bool m_lastVisibilityState = true;
@@ -26,28 +28,28 @@ namespace TooManyOrbits
 
 		private void Start()
 		{
-			Logger.Info($"Starting {ModName} v{Version}...");
+			Log.Info($"Starting {ModName} v{Version}...");
+            Instance = this;
 
 			var resourceProvider = new ResourceProvider(ModName);
 
-			Logger.Debug("Loading configuration");
+			Log.Debug("Loading configuration");
 			m_configuration = ConfigurationParser.LoadFromFile(ConfigurationFile);
 			m_configuration.PropertyChanged += OnConfigurationChanged;
 			m_toggleButton = m_configuration.ToggleKey;
 
-			Logger.Debug("Setting up OrbitVisibilityController");
+			Log.Debug("Setting up OrbitVisibilityController");
 			m_visibilityController = new OrbitVisibilityController(m_configuration);
 			m_visibilityController.OnVisibilityChanged += OnOrbitVisibilityChanged;
 
 			// setup window
-			Logger.Debug("Creating window");
+			Log.Debug("Creating window");
 			m_window = new ConfigurationWindow(ModName, m_configuration, m_visibilityController, resourceProvider);
 
 			// setup toolbar button
-			Logger.Debug("Creating toolbar button");
-			m_toolbarButton = new ToolbarButton(resourceProvider);
-			m_toolbarButton.OnEnable += m_window.Show;
-			m_toolbarButton.OnDisable += m_window.Hide;
+			Log.Debug("Creating toolbar button");
+            m_toolbarButton = new ToolbarButton(this.gameObject, resourceProvider);
+
 
 			// get notifcations when player changes to map view
 			MapView.OnEnterMapView += OnEnterMapView;
@@ -60,21 +62,21 @@ namespace TooManyOrbits
 		[SuppressMessage("ReSharper", "DelegateSubtraction")]
 		private void OnDestroy()
 		{
-			Logger.Info("Shutting down");
+			Log.Info("Shutting down");
 			MapView.OnEnterMapView -= OnEnterMapView;
 			MapView.OnExitMapView -= OnExitMapView;
 
-			Logger.Debug("Disposing ToolbarButton");
+			Log.Debug("Disposing ToolbarButton");
 			m_toolbarButton.Dispose();
 
-			Logger.Debug("Disposing window");
+			Log.Debug("Disposing window");
 			m_window.Dispose();
 
-			Logger.Debug("Disposing OrbitVisibilityController");
+			Log.Debug("Disposing OrbitVisibilityController");
 			m_visibilityController.OnVisibilityChanged -= OnOrbitVisibilityChanged;
 			m_visibilityController.Dispose();
 
-			Logger.Debug("Writing configuration file");
+			Log.Debug("Writing configuration file");
 			string configurationDirectory = Path.GetDirectoryName(ConfigurationFile);
 			if (configurationDirectory != null && !Directory.Exists(configurationDirectory))
 			{
@@ -99,7 +101,7 @@ namespace TooManyOrbits
 
 		private void OnEnterMapView()
 		{
-			Logger.Debug("Enabling...");
+			Log.Debug("Enabling...");
 			enabled = true;
 
 			if (!m_lastVisibilityState)
@@ -111,7 +113,7 @@ namespace TooManyOrbits
 
 		private void OnExitMapView()
 		{
-			Logger.Debug("Disabling...");
+			Log.Debug("Disabling...");
 			enabled = false;
 
 			m_lastVisibilityState = m_visibilityController.IsVisible;
@@ -145,7 +147,7 @@ namespace TooManyOrbits
 			{
 				m_toggleButton = m_configuration.ToggleKey;
 				m_skipUpdate = true;
-				Logger.Info($"Changed toggle key to '{m_configuration.ToggleKey}'");
+				Log.Info($"Changed toggle key to '{m_configuration.ToggleKey}'");
 			}
 		}
 	}

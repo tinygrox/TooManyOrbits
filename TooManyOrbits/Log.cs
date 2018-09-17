@@ -2,11 +2,11 @@
 
 namespace TooManyOrbits
 {
-	internal static class Logger
+	internal static class Log
 	{
 		private static readonly string LogPrefix;
 
-		static Logger()
+		static Log()
 		{
 			LogPrefix = $"[{TooManyOrbitsModule.ModName}] ";
 		}

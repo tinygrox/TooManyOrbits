@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿#if false
+using System.Reflection;
 using UnityEngine;
 
 namespace TooManyOrbits
@@ -11,19 +12,19 @@ namespace TooManyOrbits
 			var method = typeof(OrbitRenderer).GetMethod("GetOrbitColour", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
 			Color orbitColor2 = (Color)method.Invoke(target.GetOrbitDriver().Renderer, new object[0]);
 
-			Logger.Debug("Target name: " + target.GetName());
-			Logger.Debug("Target orbit color 1: " + target.GetOrbitDriver().Renderer.orbitColor);
-			Logger.Debug("Target orbit color 2: " + orbitColor2);
-			Logger.Debug("Target in vessel list: " + FlightGlobals.Vessels.Contains(target.GetVessel()));
-			Logger.Debug("Target same orbit renderer: " + (target.GetOrbitDriver().Renderer == target.GetVessel().orbitRenderer));
-			Logger.Debug("Target orbit renderer mode: " + target.GetOrbitDriver().Renderer.drawMode);
-			Logger.Debug("Target isActive: " + target.GetOrbitDriver().Renderer.isActive);
-			Logger.Debug("Target isFocused: " + target.GetOrbitDriver().Renderer.isFocused);
-			Logger.Debug("Target orbit driver draw: " + target.GetOrbitDriver().drawOrbit);
-			Logger.Debug("Target orbit driver update mode: " + target.GetOrbitDriver().updateMode);
-			Logger.Debug("Target orbit driver last mode: " + target.GetOrbitDriver().lastMode);
-			Logger.Debug("Target orbit driver color: " + target.GetOrbitDriver().orbitColor);
-			Logger.Debug("Target has conic renderer: " + (target.GetVessel().patchedConicRenderer != null));
+			Log.Debug("Target name: " + target.GetName());
+			Log.Debug("Target orbit color 1: " + target.GetOrbitDriver().Renderer.orbitColor);
+			Log.Debug("Target orbit color 2: " + orbitColor2);
+			Log.Debug("Target in vessel list: " + FlightGlobals.Vessels.Contains(target.GetVessel()));
+			Log.Debug("Target same orbit renderer: " + (target.GetOrbitDriver().Renderer == target.GetVessel().orbitRenderer));
+			Log.Debug("Target orbit renderer mode: " + target.GetOrbitDriver().Renderer.drawMode);
+			Log.Debug("Target isActive: " + target.GetOrbitDriver().Renderer.isActive);
+			Log.Debug("Target isFocused: " + target.GetOrbitDriver().Renderer.isFocused);
+			Log.Debug("Target orbit driver draw: " + target.GetOrbitDriver().drawOrbit);
+			Log.Debug("Target orbit driver update mode: " + target.GetOrbitDriver().updateMode);
+			Log.Debug("Target orbit driver last mode: " + target.GetOrbitDriver().lastMode);
+			Log.Debug("Target orbit driver color: " + target.GetOrbitDriver().orbitColor);
+			Log.Debug("Target has conic renderer: " + (target.GetVessel().patchedConicRenderer != null));
 
 		}
 
@@ -90,3 +91,4 @@ namespace TooManyOrbits
 		#endregion
 	}
 }
+#endif

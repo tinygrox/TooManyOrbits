@@ -48,7 +48,7 @@ namespace TooManyOrbits
 				return;
 			}
 
-			Logger.Debug("Showing orbits");
+			Log.Debug("Showing orbits");
 			m_hideOrbitCommands.Undo();
 			m_hideOrbitCommands = new CommandSet();
 			IsVisible = true;
@@ -62,7 +62,7 @@ namespace TooManyOrbits
 				return;
 			}
 
-			Logger.Debug("Hiding orbits");
+			Log.Debug("Hiding orbits");
 			CreateHideVesselCommands(m_hideOrbitCommands);
 			CreateHideBodiesCommands(m_hideOrbitCommands);
 			m_hideOrbitCommands.Execute();
