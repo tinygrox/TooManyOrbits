@@ -1,3 +1,8 @@
+1.1.4
+	Version bump for 1.7.2
+	Updated Assemblyversion.tt
+	Moved Images out of PluginData
+
 1.1.3.2
 	Version bump for 1.5 rebuild
 

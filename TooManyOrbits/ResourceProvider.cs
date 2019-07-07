@@ -47,9 +47,9 @@ namespace TooManyOrbits
 		internal string BuildPath(string resourceName, bool gamedata = true)
 		{
             if (gamedata)
-			    return m_resourcePath + "PluginData/Images/" + resourceName;
+			    return m_resourcePath + "Images/" + resourceName;
             else
-                return m_resourcePathNoGameData + "PluginData/Images/" + resourceName;
+                return m_resourcePathNoGameData + "Images/" + resourceName;
         }
 	}
 }
