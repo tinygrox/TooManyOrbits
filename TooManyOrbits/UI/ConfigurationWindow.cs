@@ -57,12 +57,14 @@ namespace TooManyOrbits.UI
 
 		public void Show()
 		{
+            Log.Info("ConfigurationWindow.Show");
 			m_visible = true;
 		}
 
 		public void Hide()
 		{
-			m_visible = false;
+            Log.Info("ConfigurationWindow.Hide");
+            m_visible = false;
 		}
 
 		public void Minimize()
@@ -79,6 +81,7 @@ namespace TooManyOrbits.UI
 
 		public void Draw()
 		{
+            Log.Info("Draw, m_minimized: " + m_minimized);
 			if (m_visible)
 			{
 				DrawWindow();
@@ -87,6 +90,7 @@ namespace TooManyOrbits.UI
 
 		private void DrawWindow()
 		{
+            Log.Info("DrawWindow, m_minimized: " + m_minimized);
 			if (m_minimized)
 			{
 				m_position = ClickThruBlocker.GUILayoutWindow(m_windowId, m_position, DrawMinimizedWindow, string.Empty);

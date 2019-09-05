@@ -15,8 +15,7 @@ namespace TooManyOrbits.UI
     {
         void Start()
         {
-            Log.Info("RegisterToolbar.STart");
-            ToolbarControl.RegisterMod(ToolbarButton.MODID, ToolbarButton.MODNAME);
+            ToolbarControl.RegisterMod(TooManyOrbitsCoreModule.MODID, TooManyOrbitsCoreModule.MODNAME);
         }
     }
 }

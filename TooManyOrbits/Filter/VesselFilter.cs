@@ -8,6 +8,8 @@
 			{
 				return false;
 			}
+            if (HighLogic.LoadedScene != GameScenes.FLIGHT)
+                return true;
 			if (obj == FlightGlobals.ActiveVessel)
 			{
 				return false;

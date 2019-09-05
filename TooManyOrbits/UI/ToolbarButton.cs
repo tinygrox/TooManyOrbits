@@ -2,14 +2,14 @@
 using KSP.UI.Screens;
 using UnityEngine;
 using ToolbarControl_NS;
-
+#if false
 namespace TooManyOrbits.UI
 {
     internal class ToolbarButton : IDisposable
     {
-        
-        internal  static ToolbarControl toolbarControl;
-        
+
+        internal static ToolbarControl toolbarControl;
+
         private GameObject gameObject;
         internal static ResourceProvider rp;
 
@@ -27,6 +27,7 @@ namespace TooManyOrbits.UI
 
         public void Show()
         {
+            Log.Info("Toolbarbutton.Show");
             if (toolbarControl == null)
             {
                 BuildButton();
@@ -36,11 +37,13 @@ namespace TooManyOrbits.UI
 
         public void Hide()
         {
+#if false
             if (toolbarControl != null)
             {
                 DestroyButton();
                 toolbarControl = null;
             }
+#endif
         }
 
         internal const string MODID = "toomanyorbits_NS";
@@ -51,9 +54,9 @@ namespace TooManyOrbits.UI
 
             toolbarControl = gameObject.AddComponent<ToolbarControl>();
             toolbarControl.AddToAllToolbars(OnEnable2, OnDisabl2e,
-                ApplicationLauncher.AppScenes.ALWAYS,
+                ApplicationLauncher.AppScenes.FLIGHT | ApplicationLauncher.AppScenes.TRACKSTATION,
                 MODID,
-                "geocacheButton",
+                "tooManyOrbitsButton",
                 //rp.BuildPath("ToolbarIcon-Green-38", false),
                 rp.BuildPath("ToolbarIcon-38", false),
                 //rp.BuildPath("ToolbarIcon-Green-24", false),
@@ -63,17 +66,22 @@ namespace TooManyOrbits.UI
         }
         void OnEnable2()
         {
+            Log.Info("OnEnable2");
+
             TooManyOrbitsModule.Instance.m_window.Show();
         }
         void OnDisabl2e()
         {
             TooManyOrbitsModule.Instance.m_window.Hide();
         }
+#if false
         private void DestroyButton()
         {
             toolbarControl﻿.OnDestroy();
             UnityEngine.Object.Destroy(toolbarControl);
 
         }
+#endif
     }
 }
+#endif

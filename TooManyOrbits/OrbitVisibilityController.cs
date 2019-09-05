@@ -34,6 +34,7 @@ namespace TooManyOrbits
 
 		private void OnConfigurationChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
 		{
+            Log.Info("OrbitVisibilityController.OnConvigurationChanged");
 			if (!IsVisible)
 			{
 				Show();
@@ -43,7 +44,9 @@ namespace TooManyOrbits
 
 		public void Show()
 		{
-			if (IsVisible)
+            Log.Info("OrbitVisibilityController.Show");
+
+            if (IsVisible)
 			{
 				return;
 			}
