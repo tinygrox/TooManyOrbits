@@ -16,7 +16,8 @@ namespace TooManyOrbits
 			return LogPrefix + message;
 		}
 
-		public static void Info(string message)
+        [ConditionalAttribute("DEBUG")]
+        public static void Info(string message)
 		{
 			UnityEngine.Debug.Log(FormatMessage(message));
 		}
