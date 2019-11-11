@@ -41,8 +41,8 @@ namespace TooManyOrbits
     internal class InstallChecker : MonoBehaviour
     {
         internal const string MODNAME = "Too Many Orbits";
-        internal const string FOLDERNAME = "TooManyOrbits/";
-        internal const string EXPECTEDPATH = FOLDERNAME + "QuickStart/Plugins";
+        internal const string FOLDERNAME = "TooManyOrbits";
+        internal const string EXPECTEDPATH = FOLDERNAME + "/Plugins";
 
         protected void Start()
         {
