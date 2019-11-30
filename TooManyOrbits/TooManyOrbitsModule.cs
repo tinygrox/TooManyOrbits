@@ -19,6 +19,7 @@ namespace TooManyOrbits
     {
 
     }
+
     [KSPAddon(KSPAddon.Startup.Flight, false)]
     public class TooManyOrbitsFlight : TooManyOrbitsCoreModule
     {
@@ -70,7 +71,6 @@ namespace TooManyOrbits
             if (toolbarControl == null)
             {
                 BuildButton();
-
             }
 
             if (HighLogic.LoadedScene == GameScenes.TRACKSTATION)
@@ -128,8 +128,6 @@ namespace TooManyOrbits
                 MapView.OnEnterMapView -= OnEnterMapView;
                 MapView.OnExitMapView -= OnExitMapView;
             }
-//	Log.Debug("Disposing ToolbarButton");
-	//		m_toolbarButton.Dispose();
 
 			Log.Debug("Disposing window");
 			m_window.Dispose();
@@ -157,7 +155,12 @@ namespace TooManyOrbits
 
 			if (Input.GetKeyDown(m_toggleButton))
 			{
-				m_visibilityController.Toggle();
+                if (m_visibilityController == null)
+                {
+                    m_visibilityController = new OrbitVisibilityController(m_configuration);
+                    m_visibilityController.OnVisibilityChanged += OnOrbitVisibilityChanged;
+                }
+                m_visibilityController.Toggle();
 			}
 		}
 
@@ -166,7 +169,7 @@ namespace TooManyOrbits
 			Log.Debug("OnEnterMapView Enabling...");
 			enabled = true;
 
-			if (!m_lastVisibilityState)
+			if (!m_lastVisibilityState && m_visibilityController != null)
 			{
 				m_visibilityController.Hide();
 			}

@@ -1,5 +1,8 @@
 ChangeLog
 
+1.1.6.2
+	Added code to protect against an impossible (?) error, where it went into the tracking station code when  m_visibilityController was null
+
 1.1.6.1
 	Fix InstallChecker with correct path
 
