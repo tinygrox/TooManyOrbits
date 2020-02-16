@@ -81,7 +81,7 @@ namespace TooManyOrbits.UI
 
 		public void Draw()
 		{
-            Log.Info("Draw, m_minimized: " + m_minimized);
+            //Log.Info("Draw, m_minimized: " + m_minimized);
 			if (m_visible)
 			{
 				DrawWindow();
@@ -90,7 +90,7 @@ namespace TooManyOrbits.UI
 
 		private void DrawWindow()
 		{
-            Log.Info("DrawWindow, m_minimized: " + m_minimized);
+            //Log.Info("DrawWindow, m_minimized: " + m_minimized);
 			if (m_minimized)
 			{
 				m_position = ClickThruBlocker.GUILayoutWindow(m_windowId, m_position, DrawMinimizedWindow, string.Empty);

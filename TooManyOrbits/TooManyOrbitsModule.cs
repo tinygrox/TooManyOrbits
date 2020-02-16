@@ -1,57 +1,73 @@
-﻿using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
+﻿using KSP.UI.Screens;
+using System.ComponentModel;
 using System.IO;
-using System.Reflection;
+using System.Collections;
+using ToolbarControl_NS;
 using TooManyOrbits.UI;
 using UnityEngine;
-using ToolbarControl_NS;
-using KSP.UI.Screens;
 
 
 namespace TooManyOrbits
 {
 
-    public class TooManyOrbitsModule : TooManyOrbitsCoreModule
-    { }
+	public class TooManyOrbitsModule : TooManyOrbitsCoreModule
+	{ }
 
-    [KSPAddon( KSPAddon.Startup.TrackingStation, false)]
-    public class TooManyOrbitsTrackingStation : TooManyOrbitsCoreModule
-    {
 
-    }
+	[KSPAddon(KSPAddon.Startup.TrackingStation, false)]
+	public class TooManyOrbitsTrackingStation:MonoBehaviour
+	{
+		void Start()
+		{
+			//TooManyOrbitsCoreModule.Instance.OnEnterMapView();
+			StartCoroutine(WaitASec());
+		}
+		IEnumerator WaitASec()
+		{
+			yield return new WaitForSeconds(0.05f);
+			TooManyOrbitsCoreModule.Instance.OnEnterMapView();
+		}
+		private void OnDestroy()
+		{
+			TooManyOrbitsCoreModule.Instance.OnExitMapView();
+		}
+	}
 
+#if false
     [KSPAddon(KSPAddon.Startup.Flight, false)]
     public class TooManyOrbitsFlight : TooManyOrbitsCoreModule
     {
 
     }
 
+#endif
 
+	[KSPAddon(KSPAddon.Startup.AllGameScenes, true)]
 
-    public abstract class TooManyOrbitsCoreModule : MonoBehaviour
+	public abstract class TooManyOrbitsCoreModule : MonoBehaviour
 	{
-        static internal TooManyOrbitsCoreModule Instance;
+		static internal TooManyOrbitsCoreModule Instance;
 
-        public const string ModName = "TooManyOrbits";
+		public const string ModName = "TooManyOrbits";
 		public const string ResourcePath = ModName + "/";
 
 		//private string Version => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 		private string ConfigurationFile => $"GameData/{ModName}/PluginData/{ModName}.cfg";
 
 		private KeyCode m_toggleButton;
-        internal static ToolbarControl toolbarControl;
+		internal static ToolbarControl toolbarControl;
 
 		internal ConfigurationWindow m_window;
 		private Configuration m_configuration;
 		private IVisibilityController m_visibilityController;
 		private bool m_lastVisibilityState = true;
 		private bool m_skipUpdate = false;
-        ResourceProvider resourceProvider;
+		ResourceProvider resourceProvider;
 
-        internal void Start()
+		internal void Start()
 		{
 			Log.Info("TooManyOrbitsCoreModule.Start");
-            Instance = this;
+			Instance = this;
 
 			resourceProvider = new ResourceProvider(ModName);
 
@@ -68,66 +84,72 @@ namespace TooManyOrbits
 
 			// setup toolbar button
 			Log.Debug("Creating toolbar button");
-            if (toolbarControl == null)
-            {
-                BuildButton();
-            }
+			if (toolbarControl == null)
+			{
+				BuildButton();
+			}
 
-            if (HighLogic.LoadedScene == GameScenes.TRACKSTATION)
+#if false
+			if (HighLogic.LoadedScene == GameScenes.TRACKSTATION)
                 OnEnterMapView();
             else
-            {
-                // get notifcations when player changes to map view
-                MapView.OnEnterMapView += OnEnterMapView;
-                MapView.OnExitMapView += OnExitMapView;
-            }
-     
+#endif
+			{
+				// get notifcations when player changes to map view
+				MapView.OnEnterMapView += OnEnterMapView;
+				MapView.OnExitMapView += OnExitMapView;
+			}
+
 			// disable script until woken up by entering map view
 			//enabled = false;
+			DontDestroyOnLoad(this);
 		}
 
-        internal const string MODID = "toomanyorbits_NS";
-        internal const string MODNAME = "Too Many Orbits";
-        private void BuildButton()
-        {
-            if (toolbarControl == null)
-            {
-                toolbarControl = gameObject.AddComponent<ToolbarControl>();
-                toolbarControl.AddToAllToolbars(OnEnable2, OnDisabl2e,
-                    ApplicationLauncher.AppScenes.MAPVIEW | ApplicationLauncher.AppScenes.TRACKSTATION,
-                    MODID,
-                    "tooManyOrbitsButton",
-                    //rp.BuildPath("ToolbarIcon-Green-38", false),
-                    resourceProvider.BuildPath("ToolbarIcon-38", false),
-                    //rp.BuildPath("ToolbarIcon-Green-24", false),
-                    resourceProvider.BuildPath("ToolbarIcon-24", false)
+		internal const string MODID = "toomanyorbits_NS";
+		internal const string MODNAME = "Too Many Orbits";
+		private void BuildButton()
+		{
+			if (toolbarControl == null)
+			{
+				toolbarControl = gameObject.AddComponent<ToolbarControl>();
+				toolbarControl.AddToAllToolbars(OnEnable2, OnDisabl2e,
+					ApplicationLauncher.AppScenes.MAPVIEW | ApplicationLauncher.AppScenes.TRACKSTATION,
+					MODID,
+					"tooManyOrbitsButton",
+					//rp.BuildPath("ToolbarIcon-Green-38", false),
+					resourceProvider.BuildPath("ToolbarIcon-38", false),
+					//rp.BuildPath("ToolbarIcon-Green-24", false),
+					resourceProvider.BuildPath("ToolbarIcon-24", false)
 
-                );
-            }
-        }
+				);
+			}
+		}
 
-        void OnEnable2()
-        {
-            Log.Info("OnEnable2");
+		void OnEnable2()
+		{
+			Log.Info("OnEnable2");
 
-            m_window.Show();
-        }
-        void OnDisabl2e()
-        {
-            Log.Info("OnDisabl2e");
-            m_window.Hide();
-        }
-        
+			m_window.Show();
+		}
+		void OnDisabl2e()
+		{
+			Log.Info("OnDisabl2e");
+			m_window.Hide();
+		}
+
+		// This should now only get called when the game is exiting
 		private void OnDestroy()
 		{
 			Log.Info("Shutting down");
-            if (HighLogic.LoadedScene == GameScenes.TRACKSTATION)
+#if falsae
+			if (HighLogic.LoadedScene == GameScenes.TRACKSTATION)
                 OnExitMapView();
             else
-            {
-                MapView.OnEnterMapView -= OnEnterMapView;
-                MapView.OnExitMapView -= OnExitMapView;
-            }
+#endif
+			{
+				MapView.OnEnterMapView -= OnEnterMapView;
+				MapView.OnExitMapView -= OnExitMapView;
+			}
 
 			Log.Debug("Disposing window");
 			m_window.Dispose();
@@ -155,28 +177,30 @@ namespace TooManyOrbits
 
 			if (Input.GetKeyDown(m_toggleButton))
 			{
-                if (m_visibilityController == null)
-                {
-                    m_visibilityController = new OrbitVisibilityController(m_configuration);
-                    m_visibilityController.OnVisibilityChanged += OnOrbitVisibilityChanged;
-                }
-                m_visibilityController.Toggle();
+#if false
+				if (m_visibilityController == null)
+				{
+					m_visibilityController = new OrbitVisibilityController(m_configuration);
+					m_visibilityController.OnVisibilityChanged += OnOrbitVisibilityChanged;
+				}
+#endif
+				m_visibilityController.Toggle();
 			}
 		}
 
-		private void OnEnterMapView()
+		internal void OnEnterMapView()
 		{
-			Log.Debug("OnEnterMapView Enabling...");
+			Log.Debug("OnEnterMapView Enabling...m_lastVisibilityState: " + m_lastVisibilityState);
 			enabled = true;
-
+			if (m_visibilityController == null)
+				Log.Debug("OnEnterMapView, m_visibilityController is null");
 			if (!m_lastVisibilityState && m_visibilityController != null)
 			{
 				m_visibilityController.Hide();
 			}
-			//m_toolbarButton.Show();
 		}
 
-		private void OnExitMapView()
+		internal void OnExitMapView()
 		{
 			Log.Debug("OnExitMapView Disabling...");
 			enabled = false;
@@ -198,17 +222,17 @@ namespace TooManyOrbits
 
 		internal void OnGUI()
 		{
-            if (m_window != null)
-            {
-                var originalSkin = GUI.skin;
-                GUI.skin = HighLogic.Skin;
+			if (m_window != null)
+			{
+				var originalSkin = GUI.skin;
+				GUI.skin = HighLogic.Skin;
 
-                m_window.Draw();
+				m_window.Draw();
 
-                GUI.skin = originalSkin;
-            }
-            else
-                Log.Error("m_window is null");
+				GUI.skin = originalSkin;
+			}
+			else
+				Log.Info("m_window is null");
 		}
 
 		private void OnConfigurationChanged(object sender, PropertyChangedEventArgs args)

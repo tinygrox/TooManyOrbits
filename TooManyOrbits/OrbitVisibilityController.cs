@@ -13,6 +13,7 @@ namespace TooManyOrbits
 		private CommandSet m_hideOrbitCommands;
 
 		public event Callback<bool> OnVisibilityChanged;
+
 		public bool IsVisible { get; private set; }
 
 		public OrbitVisibilityController(Configuration configuration)
@@ -60,9 +61,10 @@ namespace TooManyOrbits
 
 		public void Hide()
 		{
+			Log.Info("Hide");
 			if (!IsVisible)
 			{
-				return;
+				//return;
 			}
 
 			Log.Debug("Hiding orbits");
