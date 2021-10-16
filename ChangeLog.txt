@@ -1,5 +1,9 @@
 ChangeLog
 
+1.1.6.4
+	Added AssemblyFileVersion
+	Updated version file for 1.12
+
 1.1.6.3
 	Made entire assembly always resident (1.1.6.2 didn't fix the problem)
 	Added 1/20 second pause when going into the Tracking station to let KSP finish waking up
