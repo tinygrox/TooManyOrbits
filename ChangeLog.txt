@@ -1,5 +1,8 @@
 ChangeLog
 
+1.1.6.5
+	Fixed path for loading files (broken by new launcher)
+
 1.1.6.4
 	Added AssemblyFileVersion
 	Updated version file for 1.12
