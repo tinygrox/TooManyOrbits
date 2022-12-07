@@ -33,7 +33,6 @@ namespace TooManyOrbits
         private Texture LoadTextureResource(string resourceName)
         {
             string path = BuildPath(resourceName);
-            Log.Debug("Loading texture: " + path);
 
             Texture2D texture = new Texture2D(2, 2);
 

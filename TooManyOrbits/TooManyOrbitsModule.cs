@@ -100,6 +100,7 @@ namespace TooManyOrbits
 				MapView.OnExitMapView += OnExitMapView;
 			}
 
+			GameEvents.onGameSceneSwitchRequested.Add(onGameSceneSwitchRequested);
 			// disable script until woken up by entering map view
 			//enabled = false;
 			DontDestroyOnLoad(this);
@@ -164,6 +165,11 @@ namespace TooManyOrbits
 			{
 				Directory.CreateDirectory(configurationDirectory);
 			}
+			//ConfigurationParser.SaveToFile(ConfigurationFile, m_configuration);
+		}
+
+		void onGameSceneSwitchRequested(GameEvents.FromToAction<GameScenes, GameScenes> fta)
+        {
 			ConfigurationParser.SaveToFile(ConfigurationFile, m_configuration);
 		}
 
