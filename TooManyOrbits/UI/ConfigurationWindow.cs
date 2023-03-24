@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using ClickThroughFix;
+using KSP.Localization;
 
 namespace TooManyOrbits.UI
 {
@@ -107,17 +108,17 @@ namespace TooManyOrbits.UI
 			DrawWindowButtons();
 
 			bool enabled = !m_visibilityController.IsVisible;
-			bool shouldEnable = GUILayout.Toggle(enabled, "Enabled");
+			bool shouldEnable = GUILayout.Toggle(enabled, Localizer.Format("#TMO_btn_Enabled")); //"Enabled"
 			if (enabled != shouldEnable)
 			{
 				m_visibilityController.Toggle();
 			}
 
 			GUILayout.Space(20);
-			m_configuration.HideVesselIcons = GUILayout.Toggle(m_configuration.HideVesselIcons, "Hide vessel icons");
-			m_configuration.HideVesselOrbits = GUILayout.Toggle(m_configuration.HideVesselOrbits, "Hide vessel orbits");
-			m_configuration.HideCelestialBodyIcons = GUILayout.Toggle(m_configuration.HideCelestialBodyIcons, "Hide celestial body icons");
-			m_configuration.HideCelestialBodyOrbits = GUILayout.Toggle(m_configuration.HideCelestialBodyOrbits, "Hide celestial body orbits");
+			m_configuration.HideVesselIcons = GUILayout.Toggle(m_configuration.HideVesselIcons, Localizer.Format("#TMO_HideVesselIcons")); // "Hide vessel icons"
+			m_configuration.HideVesselOrbits = GUILayout.Toggle(m_configuration.HideVesselOrbits, Localizer.Format("#TMO_HideVesselOrbits")); // "Hide vessel orbits"
+			m_configuration.HideCelestialBodyIcons = GUILayout.Toggle(m_configuration.HideCelestialBodyIcons, Localizer.Format("#TMO_HideCelestialBodyIcons")); // "Hide celestial body icons"
+			m_configuration.HideCelestialBodyOrbits = GUILayout.Toggle(m_configuration.HideCelestialBodyOrbits, Localizer.Format("#TMO_HideCelestialBodyOrbits")); // "Hide celestial body orbits"
 			GUILayout.Space(20);
 			DrawKeyBinding();
 			GUILayout.EndVertical();
@@ -169,12 +170,12 @@ namespace TooManyOrbits.UI
 			}
 
 			GUILayout.BeginHorizontal();
-			GUILayout.Label("Hotkey: ");
+			GUILayout.Label(Localizer.Format("#TMO_HotKeys") + ": "); // "Hotkey: "
 			GUILayout.Space(10);
 
 			if (m_setKeyMode)
 			{
-				GUILayout.Label("<Press a key>", m_textfieldStyle);
+				GUILayout.Label(Localizer.Format("#TMO_setKeys"), m_textfieldStyle); // "<Press a key>"
 				KeyCode? newKeyCode = GetNextPressedKey();
 
 				if (newKeyCode.HasValue)

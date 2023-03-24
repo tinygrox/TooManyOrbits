@@ -5,7 +5,7 @@ using System.Collections;
 using ToolbarControl_NS;
 using TooManyOrbits.UI;
 using UnityEngine;
-
+using KSP.Localization;
 
 namespace TooManyOrbits
 {
@@ -221,7 +221,7 @@ namespace TooManyOrbits
 			const float duration = 1.5f;
 			if (enabled)
 			{
-				var message = orbitsVisible ? "Orbits shown" : "Orbits hidden";
+				var message = orbitsVisible ? Localizer.Format("#TMO_ShowOrbits") : Localizer.Format("#TMO_HiddenOrbits") ; // "Orbits shown""Orbits hidden"
 				ScreenMessages.PostScreenMessage(message, duration);
 			}
 		}
